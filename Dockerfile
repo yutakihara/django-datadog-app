@@ -25,5 +25,15 @@ RUN mkdir -p /app/logs
 # ポート8000を公開
 EXPOSE 8000
 
-# gunicornでアプリケーションを起動
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120", "datadog_app.wsgi:application"]
+# Datadog APM環境変数を設定
+ENV DD_ENV=production
+ENV DD_SERVICE=django-datadog-app
+ENV DD_VERSION=1.0.0
+ENV DD_TRACE_ENABLED=true
+ENV DD_PROFILING_ENABLED=true
+ENV DD_LOGS_INJECTION=true
+ENV DD_DJANGO_INSTRUMENT_TEMPLATES=true
+ENV DD_DJANGO_INSTRUMENT_DATABASES=true
+
+# ddtrace-run でgunicornを起動してAPMを有効化
+CMD ["ddtrace-run", "gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120", "datadog_app.wsgi:application"]

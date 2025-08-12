@@ -136,6 +136,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DD_API_KEY = os.getenv('DD_API_KEY', '')
 DD_APP_KEY = os.getenv('DD_APP_KEY', '')
 
+# Datadog APM Configuration
+if DD_API_KEY:
+    import ddtrace
+    from ddtrace import config
+    
+    # Configure Datadog APM
+    config.django['service_name'] = 'django-datadog-app'
+    config.django['distributed_tracing'] = True
+    config.django['instrument_templates'] = True
+    
+    # Configure database tracing
+    config.sqlite3['service_name'] = 'django-db'
+    config.psycopg['service_name'] = 'django-db'
+    
+    # Configure Redis tracing if used
+    config.redis['service_name'] = 'django-redis'
+    
+    # Patch libraries for automatic instrumentation
+    ddtrace.patch_all()
+
 # Static files configuration
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [

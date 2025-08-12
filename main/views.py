@@ -7,6 +7,13 @@ from django.conf import settings
 from datadog import initialize, api
 import requests
 
+# Import ddtrace for APM tracing
+try:
+    from ddtrace import tracer
+    DDTRACE_AVAILABLE = True
+except ImportError:
+    DDTRACE_AVAILABLE = False
+
 # Initialize Datadog
 if settings.DD_API_KEY:
     initialize(api_key=settings.DD_API_KEY, app_key=settings.DD_APP_KEY)
@@ -72,9 +79,34 @@ def api_test(request):
     """Test API endpoint with logging and metrics"""
     logger.info("API test endpoint called")
     
-    # Simulate some processing time
-    processing_time = random.uniform(0.1, 2.0)
-    time.sleep(processing_time)
+    # Create custom span for detailed APM tracing
+    if DDTRACE_AVAILABLE and settings.DD_API_KEY:
+        with tracer.trace("api.test.processing", service="django-datadog-app") as span:
+            span.set_tag("endpoint", "api_test")
+            span.set_tag("user_agent", request.META.get('HTTP_USER_AGENT', 'unknown'))
+            
+            # Simulate some processing time
+            processing_time = random.uniform(0.1, 2.0)
+            span.set_tag("processing_time", processing_time)
+            
+            # Simulate database operation with custom span
+            with tracer.trace("db.query.simulation", service="django-db") as db_span:
+                db_span.set_tag("query_type", "SELECT")
+                db_span.set_tag("table", "test_table")
+                time.sleep(processing_time * 0.3)  # 30% of time for "DB query"
+            
+            # Simulate external API call with custom span
+            with tracer.trace("http.client.external_api", service="external-api") as http_span:
+                http_span.set_tag("http.method", "GET")
+                http_span.set_tag("http.url", "https://api.example.com/data")
+                time.sleep(processing_time * 0.2)  # 20% of time for "external API"
+            
+            # Rest of processing
+            time.sleep(processing_time * 0.5)  # 50% of time for business logic
+    else:
+        # Simulate some processing time
+        processing_time = random.uniform(0.1, 2.0)
+        time.sleep(processing_time)
     
     # Generate some test data
     test_data = {
