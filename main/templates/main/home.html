@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">
+                <i class="fas fa-chart-bar text-primary"></i>
+                Django + Datadog Demo
+            </h1>
+            <p class="lead">
+                This is a demonstration Django application integrated with Datadog for monitoring and observability.
+                The application showcases how to send custom metrics, logs, and traces to Datadog.
+            </p>
+            <hr class="my-4">
+            <p class="mb-4">
+                <strong>Datadog Status:</strong> 
+                <span class="badge bg-{% if datadog_enabled %}success{% else %}warning{% endif %} fs-6">
+                    {% if datadog_enabled %}
+                        <i class="fas fa-check-circle"></i> Connected & Sending Metrics
+                    {% else %}
+                        <i class="fas fa-exclamation-triangle"></i> Not Configured
+                    {% endif %}
+                </span>
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+                <a class="btn btn-primary btn-lg" href="{% url 'main:metrics' %}" role="button">
+                    <i class="fas fa-chart-line"></i> View Metrics
+                </a>
+                <a class="btn btn-outline-primary btn-lg" href="{% url 'main:api_test' %}" role="button">
+                    <i class="fas fa-code"></i> Test API
+                </a>
+                <a class="btn btn-outline-success btn-lg" href="{% url 'main:health_check' %}" role="button">
+                    <i class="fas fa-heart"></i> Health Check
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Custom Metrics</h5>
+                <p class="card-text">
+                    Send custom application metrics to Datadog including page views, API calls, and performance data.
+                </p>
+                <a href="{% url 'main:metrics' %}" class="btn btn-primary">View Metrics</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-file-alt fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Application Logs</h5>
+                <p class="card-text">
+                    Structured logging integration with Datadog for debugging and monitoring application behavior.
+                </p>
+                <a href="{% url 'main:api_test' %}" class="btn btn-info">Generate Logs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-heartbeat fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Health Monitoring</h5>
+                <p class="card-text">
+                    Real-time health checks and status monitoring for application components and dependencies.
+                </p>
+                <a href="{% url 'main:health_check' %}" class="btn btn-success">Check Health</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h3><i class="fas fa-info-circle text-info"></i> Getting Started</h3>
+        <div class="alert alert-info">
+            <h5><i class="fas fa-cog"></i> Configuration</h5>
+            {% if not datadog_enabled %}
+            <p><strong>To enable Datadog integration:</strong></p>
+            <ol>
+                <li>Set your <code>DD_API_KEY</code> environment variable</li>
+                <li>Optionally set <code>DD_APP_KEY</code> for additional features</li>
+                <li>Restart the application</li>
+            </ol>
+            {% else %}
+            <p><strong>Datadog is configured!</strong> Your metrics and logs are being sent to Datadog.</p>
+            {% endif %}
+        </div>
+        
+        <div class="alert alert-secondary">
+            <h5><i class="fas fa-book"></i> Features Demonstrated</h5>
+            <ul class="mb-0">
+                <li><strong>Custom Metrics:</strong> Page views, API response times, error rates</li>
+                <li><strong>Structured Logging:</strong> Application events with context</li>
+                <li><strong>Health Checks:</strong> Application and dependency monitoring</li>
+                <li><strong>Error Tracking:</strong> Simulated errors for testing</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
