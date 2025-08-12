@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "your-registry-name"
+  AZURE_CONTAINER_REGISTRY: "djangodatadogreg"
   CONTAINER_APP_NAME: "django-datadog-app"
-  RESOURCE_GROUP: "your-resource-group"
+  RESOURCE_GROUP: "django-datadog-rg"
   IMAGE_NAME: "django-datadog-app"
 
 jobs:
