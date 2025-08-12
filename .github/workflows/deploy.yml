@@ -52,6 +52,7 @@ jobs:
         containerAppName: ${{ env.CONTAINER_APP_NAME }}
         resourceGroup: ${{ env.RESOURCE_GROUP }}
         imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        targetPort: 8000
         environmentVariables: |
           DEBUG=False
           SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
