@@ -136,6 +136,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DD_API_KEY = os.getenv('DD_API_KEY', '')
 DD_APP_KEY = os.getenv('DD_APP_KEY', '')
 
+# Datadog RUM Configuration
+DD_RUM_APPLICATION_ID = os.getenv('DD_RUM_APPLICATION_ID', '')
+DD_RUM_CLIENT_TOKEN = os.getenv('DD_RUM_CLIENT_TOKEN', '')
+DD_SITE = os.getenv('DD_SITE', 'datadoghq.com')
+
 # Datadog APM Configuration
 if DD_API_KEY:
     import ddtrace

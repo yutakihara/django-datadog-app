@@ -2,6 +2,8 @@
 
 {% block title %}{{ title }}{% endblock %}
 
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-12">
@@ -15,13 +17,23 @@
                 The application showcases how to send custom metrics, logs, and traces to Datadog.
             </p>
             <hr class="my-4">
-            <p class="mb-4">
+            <p class="mb-2">
                 <strong>Datadog Status:</strong> 
                 <span class="badge bg-{% if datadog_enabled %}success{% else %}warning{% endif %} fs-6">
                     {% if datadog_enabled %}
                         <i class="fas fa-check-circle"></i> Connected & Sending Metrics
                     {% else %}
                         <i class="fas fa-exclamation-triangle"></i> Not Configured
+                    {% endif %}
+                </span>
+            </p>
+            <p class="mb-4">
+                <strong>RUM Status:</strong> 
+                <span class="badge bg-{% if rum_enabled %}success{% else %}warning{% endif %} fs-6">
+                    {% if rum_enabled %}
+                        <i class="fas fa-eye"></i> Real User Monitoring Active
+                    {% else %}
+                        <i class="fas fa-eye-slash"></i> RUM Not Configured
                     {% endif %}
                 </span>
             </p>

@@ -38,6 +38,7 @@ def home(request):
     context = {
         'title': 'Django + Datadog Demo',
         'datadog_enabled': bool(settings.DD_API_KEY),
+        'rum_enabled': True,  # RUM is now hardcoded in base.html
     }
     return render(request, 'main/home.html', context)
 
