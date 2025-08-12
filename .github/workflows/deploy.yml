@@ -47,6 +47,8 @@ jobs:
       uses: azure/container-apps-deploy-action@v1
       with:
         registryUrl: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
+        registryUsername: ${{ secrets.ACR_USERNAME }}
+        registryPassword: ${{ secrets.ACR_PASSWORD }}
         containerAppName: ${{ env.CONTAINER_APP_NAME }}
         resourceGroup: ${{ env.RESOURCE_GROUP }}
         imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
